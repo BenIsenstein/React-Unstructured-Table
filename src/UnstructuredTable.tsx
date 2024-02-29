@@ -13,11 +13,7 @@ export function UnstructuredTable(props: { data: DataObject[] }) {
 
     for (const col of columns) {
         theadElements.push(
-            <th
-                key={col}
-                className="border-1px border-slate-600 p-2" 
-                scope="col"
-            >
+            <th key={col} className="border-1px border-slate-600 p-2" scope="col">
                 {col}
             </th>
         )
@@ -30,20 +26,14 @@ export function UnstructuredTable(props: { data: DataObject[] }) {
             const value = row[col] ?? ''
             
             tdatas.push(
-                <td
-                    key={col + value}
-                    className="border-1px border-slate-600 p-2"
-                >
+                <td key={col + value} className="border-1px border-slate-600 p-2">
                     {value}
                 </td>
             )
         }
 
         tbodyElements.push(
-            <tr
-                key={row.id ? String(row.id) : JSON.stringify(row)}
-                className="odd:bg-white even:bg-slate-50"
-            >
+            <tr key={row.id ? String(row.id) : JSON.stringify(row)} className="odd:bg-white even:bg-slate-50">
                 {tdatas}
             </tr>
         )

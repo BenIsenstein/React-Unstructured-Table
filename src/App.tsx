@@ -1,7 +1,8 @@
 import { DataObject, UnstructuredTable } from 'UnstructuredTable'
 import { useState } from 'react'
+
 const UnstructuredTableSource = `
-type DataObject = Record<string, boolean | number | string>
+export type DataObject = Record<string, boolean | number | string>
 
 export function UnstructuredTable(props: { data: DataObject[] }) {
     const columns = new Set<string>()
@@ -16,11 +17,7 @@ export function UnstructuredTable(props: { data: DataObject[] }) {
 
     for (const col of columns) {
         theadElements.push(
-            <th
-                key={col}
-                className="border-1px border-slate-600 p-2" 
-                scope="col"
-            >
+            <th key={col} className="border-1px border-slate-600 p-2" scope="col">
                 {col}
             </th>
         )
@@ -33,20 +30,14 @@ export function UnstructuredTable(props: { data: DataObject[] }) {
             const value = row[col] ?? ''
             
             tdatas.push(
-                <td
-                    key={col + value}
-                    className="border-1px border-slate-600 p-2"
-                >
+                <td key={col + value} className="border-1px border-slate-600 p-2">
                     {value}
                 </td>
             )
         }
 
         tbodyElements.push(
-            <tr
-                key={row.id ? String(row.id) : JSON.stringify(row)}
-                className="odd:bg-white even:bg-slate-50"
-            >
+            <tr key={row.id ? String(row.id) : JSON.stringify(row)} className="odd:bg-white even:bg-slate-50">
                 {tdatas}
             </tr>
         )
@@ -94,16 +85,43 @@ function generateRandomTableData(): DataObject[] {
 
 export function App() {
   const [data, setData] = useState<DataObject[]>(() => generateRandomTableData())
+  const [hasCopied, setHasCopied] = useState(false)
 
   return (
     <div className="box-border p-5 relative w-screen min-h-screen h-max bg-yellow-50">
-      <h2 className="text-2xl font-medium mb-4">Unstructured table component</h2>
-      <pre className="text-sm mb-8">
+      <h2 className="text-2xl font-medium mb-4">
+        Unstructured Table Component
+      </h2>
+      <a className="block mb-4 w-max hover:text-blue" href="https://github.com/BenIsenstein/React-Unstructured-Table">
+        Source code
+      </a>
+      <pre className="relative text-sm mb-8 p-4 pt-8 rounded-sm border-1px border-black bg-slate-300 w-max">
+        {hasCopied && (
+            <div className="absolute right-18 top-4 p-1 rounded-md bg-slate-50">copied!</div>
+        )}
+        <button
+            className="absolute right-4 top-4 p-1 rounded-md bg-slate-50 hover:bg-slate-600 hover:text-white active:bg-slate-300"
+            onClick={() => {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(UnstructuredTableSource)
+                    .then(() => {
+                        setHasCopied(true)
+                        setTimeout(() => setHasCopied(false), 2000)
+                    })
+                }
+            }}
+        >
+            copy
+        </button>
         {UnstructuredTableSource}
       </pre>
-      <h2 className="text-2xl font-medium mb-4">Month-by-month data table</h2>
-      <button className="p-2 mb-4 border-1px border-black rounded-md" onClick={() => setData(generateRandomTableData())}>Generate new data</button>
-      <div className="w-max max-w-full h-max max-h-90vh overflow-scroll">
+      <h2 className="text-2xl font-medium mb-4">
+        Data Table
+      </h2>
+      <button className="p-2 mb-4 border-1px border-black rounded-md" onClick={() => setData(generateRandomTableData())}>
+        Generate new data
+      </button>
+      <div className="w-max max-w-full h-max max-h-90vh overflow-scroll border-y-1px border-black">
         <UnstructuredTable data={data} />
       </div>
     </div>

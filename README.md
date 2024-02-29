@@ -1,6 +1,6 @@
-# Open data app using React, Vite, UnoCSS
+# React table component demo using React, Vite, UnoCSS
 
-A react app using vite, unoCSS, and recharts.
+A react app using vite and UnoCSS.
 
 ## How to run this app locally
 
